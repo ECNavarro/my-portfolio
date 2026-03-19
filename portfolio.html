@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emmel Cyrus Navarro | Software Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* THEME VARIABLES */
+        :root[data-theme="dark"] {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --card-border: #30363d;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+            --accent: #58a6ff;
+            --btn-bg: rgba(88, 166, 255, 0.1);
+            --tag-bg: #21262d;
+        }
+
+        :root[data-theme="light"] {
+            --bg-color: #ffffff;
+            --card-bg: #f6f8fa;
+            --card-border: #d0d7de;
+            --text-main: #1f2328;
+            --text-dim: #57606a;
+            --accent: #0969da;
+            --btn-bg: rgba(9, 105, 218, 0.1);
+            --tag-bg: #eaeef2;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 80px 20px; }
+
+        /* THEME TOGGLE */
+        #theme-toggle {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            cursor: pointer;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
+
+        /* HEADER */
+        header { text-align: center; margin-bottom: 80px; }
+        h1 { font-size: 3rem; margin: 0; letter-spacing: -1.5px; font-weight: 700; }
+        .titles { font-family: 'Fira Code', monospace; color: var(--accent); font-size: 1.05rem; margin: 15px 0; font-weight: 500; }
+        .contact-links { color: var(--text-dim); font-size: 0.9rem; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .contact-links a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent); transition: 0.2s; }
+        .contact-links a:hover { color: var(--accent); }
+
+        /* SECTIONS */
+        section { margin-bottom: 80px; opacity: 0; transform: translateY(20px); transition: 0.6s all ease-out; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        h2 { font-size: 1.5rem; display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        h2::after { content: ""; height: 1px; background: var(--card-border); flex-grow: 1; }
+
+        /* TECH STACK */
+        .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
+        .stack-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .stack-item:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .stack-item svg { width: 30px; height: 30px; fill: var(--text-dim); transition: 0.3s; }
+        .stack-item:hover svg { fill: var(--accent); }
+        .stack-name { font-size: 0.75rem; color: var(--text-dim); font-family: 'Fira Code', monospace; }
+
+        /* PROJECTS */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 25px;
+            border-radius: 12px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover { border-color: var(--accent); }
+        .project-card h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--accent); }
+        .project-card p { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 20px; flex-grow: 1; }
+        .btn-code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-decoration: none;
+            background: var(--btn-bg);
+            padding: 8px 14px;
+            border-radius: 6px;
+            align-self: flex-start;
+            transition: 0.2s;
+        }
+        .btn-code:hover { background: var(--accent); color: white; }
+
+        /* EXPERIENCE */
+        .exp-item { border-left: 2px solid var(--accent); padding-left: 25px; margin-bottom: 40px; position: relative; }
+        .exp-item::before { content: ""; width: 10px; height: 10px; background: var(--accent); position: absolute; left: -6px; top: 5px; border-radius: 50%; }
+        .exp-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+        .role { font-weight: 700; font-size: 1.1rem; }
+        .company { color: var(--accent); font-weight: 500; display: block; margin: 2px 0 10px 0; }
+        .date { font-size: 0.85rem; color: var(--text-dim); font-family: 'Fira Code', monospace; }
+        ul { padding-left: 18px; color: var(--text-dim); font-size: 0.95rem; }
+        li { margin-bottom: 8px; }
+
+        /* SKILL TAGS */
+        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .tag { background: var(--tag-bg); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; color: var(--text-main); border: 1px solid var(--card-border); }
+
+        footer { text-align: center; color: var(--text-dim); font-size: 0.8rem; padding: 40px 0; border-top: 1px solid var(--card-border); }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .project-grid { grid-template-columns: 1fr; }
+            .exp-header { flex-direction: column; }
+        }
+.stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+}
+
+.stack-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stack-item svg {
+    width: 64px; /* Adjust size here */
+    height: 64px;
+    margin-bottom: 10px;
+}
+    </style>
+</head>
+<body>
+
+    <button id="theme-toggle" aria-label="Toggle Theme">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>EMMEL CYRUS NAVARRO</h1>
+            <div class="titles">Backend Developer // Software Engineer // Python Developer</div>
+            <div class="contact-links">
+                <span>Philippines</span>
+                <span>+63 998 156 7025</span>
+                <a href="mailto:navarroemmelcyrus@gmail.com">navarroemmelcyrus@gmail.com</a>
+                <a href="https://www.linkedin.com/in/emmel-cyrus-navarro-30315526a" target="_blank">LinkedIn</a>
+            </div>
+        </header>
+
+        <section id="stack">
+    <h2>Technical Expertise</h2>
+    <div class="stack-grid">
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <linearGradient id="py-a" gradientUnits="userSpaceOnUse" x1="70.252" y1="1237.476" x2="170.659" y2="1151.089" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)">
+                    <stop offset="0" stop-color="#5A9FD4"/><stop offset="1" stop-color="#306998"/>
+                </linearGradient>
+                <linearGradient id="py-b" gradientUnits="userSpaceOnUse" x1="209.474" y1="1098.811" x2="173.62" y2="1149.537" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)">
+                    <stop offset="0" stop-color="#FFD43B"/><stop offset="1" stop-color="#FFE873"/>
+                </linearGradient>
+                <path fill="url(#py-a)" d="M63.391 1.988c-4.222.02-8.252.379-11.8 1.007-10.45 1.846-12.346 5.71-12.346 12.837v9.411h24.693v3.137H29.977c-7.176 0-13.46 4.313-15.426 12.521-2.268 9.405-2.368 15.275 0 25.096 1.755 7.311 5.947 12.519 13.124 12.519h8.491V67.234c0-8.151 7.051-15.34 15.426-15.34h24.665c6.866 0 12.346-5.654 12.346-12.548V15.833c0-6.693-5.646-11.72-12.346-12.837-4.244-.706-8.645-1.027-12.866-1.008zM50.037 9.557c2.55 0 4.634 2.117 4.634 4.721 0 2.593-2.083 4.69-4.634 4.69-2.56 0-4.633-2.097-4.633-4.69-.001-2.604 2.073-4.721 4.633-4.721z" transform="translate(0 10.26)"/>
+                <path fill="url(#py-b)" d="M91.682 28.38v10.966c0 8.5-7.208 15.655-15.426 15.655H51.591c-6.756 0-12.346 5.783-12.346 12.549v23.515c0 6.691 5.818 10.628 12.346 12.547 7.816 2.297 15.312 2.713 24.665 0 6.216-1.801 12.346-5.423 12.346-12.547v-9.412H63.938v-3.138h37.012c7.176 0 9.852-5.005 12.348-12.519 2.578-7.735 2.467-15.174 0-25.096-1.774-7.145-5.161-12.521-12.348-12.521h-9.268zM77.809 87.927c2.561 0 4.634 2.097 4.634 4.692 0 2.602-2.074 4.719-4.634 4.719-2.55 0-4.633-2.117-4.633-4.719 0-2.595 2.083-4.692 4.633-4.692z" transform="translate(0 10.26)"/>
+            </svg>
+            <span class="stack-name">Python</span>
+        </div>
+
+        <div class="stack-item">
+            <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" fill="#092e20">
+                <path d="M59.448 0h20.93v96.88c-10.737 2.04-18.62 2.855-27.181 2.855-25.551-.001-38.87-11.551-38.87-33.705 0-21.338 14.135-35.2 36.015-35.2 3.398 0 5.98.272 9.106 1.087zm0 48.765c-2.446-.815-4.485-1.086-7.067-1.086-10.6 0-16.717 6.523-16.717 17.939 0 11.145 5.845 17.26 16.582 17.26 2.309 0 4.212-.136 7.202-.542z"/>
+                <path d="M113.672 32.321V80.84c0 16.717-1.224 24.735-4.893 31.666-3.398 6.661-7.883 10.873-17.124 15.494l-19.435-9.241c9.242-4.35 13.726-8.153 16.58-14 2.99-5.979 3.943-12.91 3.943-31.122V32.321zM92.742.111h20.93v21.474h-20.93z"/>
+            </svg>
+            <span class="stack-name">Django</span>
+        </div>
+
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path d="M61.516 115.086c.664.523.79.527 1.25.066.266-.266.328-.574.235-1.156-.14-.886-.192-38.055-.055-38.196.05-.046 4.96-.077 10.914-.07 10.414.016 10.833 0 11.043-.394.23-.43.008-1.574-.402-2.07-.212-.254-.809-1.403-5.742-11.039a8751.248 8751.248 0 00-8.598-16.759c-1.067-2.077-2.89-5.628-4.047-7.89a3554.569 3554.569 0 00-4.055-7.89c-6.523-12.665-7.863-15.317-8.348-16.485-.257-.628-.452-.808-.87-.808-.297 0-.602.101-.68.227-.078.124-.129 9.073-.113 19.89.023 15.942-.024 19.664-.25 19.672-.153.004-4.836 0-10.406-.012-7.426-.012-10.208.047-10.43.234-.422.348-.379 1.336.082 1.953.547.73 29.601 58.977 29.781 59.7.082.327.391.793.691 1.027z" fill="#049688"/>
+            </svg>
+            <span class="stack-name">FastAPI</span>
+        </div>
+
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path fill="#3A4D54" d="M73.8 50.8h11.3v11.5h5.7c2.6 0 5.3-.5 7.8-1.3 1.2-.4 2.6-1 3.8-1.7-1.6-2.1-2.4-4.7-2.6-7.3-.3-3.5.4-8.1 2.8-10.8l1.2-1.4 1.4 1.1c3.6 2.9 6.5 6.8 7.1 11.4 4.3-1.3 9.3-1 13.1 1.2l1.5.9-.8 1.6c-3.2 6.2-9.9 8.2-16.4 7.8-9.8 24.3-31 35.8-56.8 35.8-13.3 0-25.5-5-32.5-16.8l-.1-.2-1-2.1c-2.4-5.2-3.1-10.9-2.6-16.6l.2-1.7h9.6V50.8h11.3V39.6h22.5V28.3h13.5v22.5z"/>
+                <path fill="#00AADA" d="M110.4 55.1c.8-5.9-3.6-10.5-6.4-12.7-3.1 3.6-3.6 13.2 1.3 17.2-2.8 2.4-8.5 4.7-14.5 4.7H18.6c-.6 6.2.5 11.9 3 16.8l.8 1.5c.5.9 1.1 1.7 1.7 2.6 3 .2 5.7.3 8.2.2 4.9-.1 8.9-.7 12-1.7.5-.2.9.1 1.1.5.2.5-.1.9-.5 1.1-.4.1-.8.3-1.3.4-2.4.7-5 1.1-8.3 1.3h-.6c-1.3.1-2.7.1-4.2.1-1.6 0-3.1 0-4.9-.1 6 6.8 15.4 10.8 27.2 10.8 25 0 46.2-11.1 55.5-35.9 6.7.7 13.1-1 16-6.7-4.5-2.7-10.5-1.8-13.9-.1z"/>
+            </svg>
+            <span class="stack-name">Docker</span>
+        </div>
+<div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <circle cx="64" cy="64" r="60" fill="#ff6c37"/>
+                <path fill="#fff" d="M91.078 24.164a10.038 10.038 0 0 0-5.781 2.426 10.028 10.028 0 0 0-1.54 13.465 10.028 10.028 0 0 0 13.276 2.715l.156.155a10.63 10.63 0 0 0 1.965-1.45A10.341 10.341 0 0 0 99 27.107l-8.844 8.789-.156-.155 8.844-8.793a10.038 10.038 0 0 0-7.766-2.78zM79.434 38.551c-4.24-.007-11.163 4.799-28.067 21.703l.084.086c-.092-.032-.185-.035-.185-.035l-6.364 6.308a1.035 1.035 0 0 0 .93 1.762l10.914-2.328a.307.307 0 0 0 .092-.17l.242.25-3.72 3.69h-.18l-22.086 22.26 7.086 6.824a1.254 1.254 0 0 0 1.476.149 1.327 1.327 0 0 0 .645-1.356l-1.035-4.5a.534.534 0 0 1 0-.62 117.285 117.285 0 0 0 26.738-17.583l-4.535-4.537.086-.014-2.69-2.689.172-.174.182.186-.094.091 7.137 7.293v-.003c13.68-12.954 23.39-23.367 20.865-30.375a3.83 3.83 0 0 0-1.107-2.208z"/>
+            </svg>
+            <span class="stack-name">Postman</span>
+        </div>
+
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path fill="#E44D26" d="M19.037 113.876L9.032 1.661h109.936l-10.016 112.198-45.019 12.48z"/>
+                <path fill="#F16529" d="M64 116.8l36.378-10.086 8.559-95.878H64z"/>
+                <path fill="#EBEBEB" d="M64 52.455H45.788L44.53 38.361H64V24.599H29.489l.33 3.692 3.382 37.927H64zm0 35.743l-.061.017-15.327-4.14-.979-10.975H33.816l1.928 21.609 28.193 7.826.063-.017z"/>
+                <path fill="#fff" d="M63.952 52.455v13.763h16.947l-1.597 17.849-15.35 4.143v14.319l28.215-7.82.207-2.325 3.234-36.233.335-3.696h-3.708zm0-27.856v13.762h33.244l.276-3.092.628-6.978.329-3.692z"/>
+            </svg>
+            <span class="stack-name">HTML</span>
+        </div>
+
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path d="M64 25.6c-17.067 0-27.73 8.53-32 25.6 6.4-8.534 13.867-11.734 22.4-9.6 4.871 1.214 8.352 4.746 12.207 8.66 6.277 6.366 13.54 13.74 29.393 13.74 17.067 0 27.733-8.533 32-25.6-6.4 8.533-13.867 11.733-22.4 9.6-4.87-1.213-8.347-4.746-12.207-8.66C77.53 32.973 70.27 25.6 64 25.6zM32 64c-17.067 0-27.73 8.53-32 25.6 6.4-8.533 13.867-11.733 22.4-9.6 4.871 1.214 8.352 4.746 12.207 8.66 6.277 6.366 13.54 13.74 29.393 13.74 17.067 0 27.733-8.533 32-25.6-6.4 8.533-13.867 11.733-22.4 9.6-4.87-1.213-8.347-4.746-12.207-8.66C45.53 71.373 38.27 64 32 64z" fill="#38bdf8"/>
+            </svg>
+            <span class="stack-name">Tailwind CSS</span>
+        </div>
+
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path fill="#F34F29" d="M124.737 58.378L69.621 3.264c-3.172-3.174-8.32-3.174-11.497 0L46.68 14.71l14.518 14.518c3.375-1.139 7.243-.375 9.932 2.314 2.703 2.706 3.461 6.607 2.294 9.993l13.992 13.993c3.385-1.167 7.292-.413 9.994 2.295 3.78 3.777 3.78 9.9 0 13.679a9.673 9.673 0 01-13.683 0 9.677 9.677 0 01-2.105-10.521L68.574 47.933l-.002 34.341a9.708 9.708 0 012.559 1.828c3.778 3.777 3.778 9.898 0 13.683-3.779 3.777-9.904 3.777-13.679 0-3.778-3.784-3.778-9.905 0-13.683a9.65 9.65 0 013.167-2.11V47.333a9.581 9.581 0 01-3.167-2.111c-2.862-2.86-3.551-7.06-2.083-10.576L41.056 20.333 3.264 58.123a8.133 8.133 0 000 11.5l55.117 55.114c3.174 3.174 8.32 3.174 11.499 0l54.858-54.858a8.135 8.135 0 00-.001-11.501z"/>
+            </svg>
+            <span class="stack-name">Git</span>
+        </div>
+<div class="stack-item">
+            <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="azure-a" x1="60.9" y1="9.6" x2="18.7" y2="134.4" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#114A8B"/><stop offset="1" stop-color="#0669BC"/>
+                    </linearGradient>
+                    <linearGradient id="azure-c" x1="68.7" y1="6" x2="115.1" y2="129.5" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#3CCBF4"/><stop offset="1" stop-color="#2892DF"/>
+                    </linearGradient>
+                </defs>
+                <path d="M42.9 4.4L0 115.6a6 6 0 005.6 8H35.4a6.4 6.4 0 004.9-4.2L47.5 98l25.7 24a6.1 6.1 0 003.8 1.4h33.5L95.5 81.6H42.7L80.5 4.4a6 6 0 00-5.6-4.4H48.5a6 6 0 00-5.6 4.4z" fill="url(#azure-a)"/>
+                <path d="M90.1 4.4a6 6 0 00-5.6-4.4H42.8a6 6 0 015.6 4.1l36.2 107.1a6 6 0 01-5.6 7.8H122a6 6 0 005.6-7.8z" fill="url(#azure-c)"/>
+            </svg>
+            <span class="stack-name">Azure</span>
+        </div>
+<div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path fill="#00618A" d="M116.9 97.8c-6.8-.2-12.1.4-16.6 2.3-1.3.5-3.3.6-3.5 2.1.7.7.8 1.8 1.4 2.7 1.1 1.7 2.9 4.1 4.5 5.3 1.8 1.3 3.6 2.8 5.5 3.9 3.4 2 7.1 3.2 10.3 5.3 1.9 1.2 3.8 2.7 5.7 4.1 1 .7 1.5 1.7 2.7 2.1v-.2c-.6-.8-.8-1.9-1.4-2.7l-2.5-2.5c-2.5-3.3-5.6-6.2-9-8.6-2.7-1.9-8.6-4.5-9.8-7.6l-.2-.2c1.9-.2 4.1-.9 5.9-1.4 2.9-.8 5.6-.6 8.6-1.4l4.1-1.2v-.8c-1.5-1.6-2.6-3.7-4.3-5.1-4.4-3.7-9.1-7.4-14-10.5-2.7-1.7-6.1-2.8-9-4.3-.9-.5-2.7-.7-3.3-1.6-1.5-1.9-2.3-4.4-3.5-6.6-2.4-4.7-4.8-9.9-7-14.8-1.5-3.4-2.4-6.7-4.3-9.8-8.9-14.6-18.4-23.4-33.2-32-3.1-1.8-6.9-2.6-10.9-3.5-2.1-.1-4.3-.3-6.4-.4-1.3-.5-2.7-2.1-3.9-2.9C17.8 4.6 5.3-2.2 1.6 6.7c-2.3 5.6 3.4 11 5.5 13.9 1.4 2 3.3 4.2 4.3 6.4.7 1.5.8 2.9 1.4 4.5 1.4 3.8 2.7 8 4.5 11.5.9 1.8 1.9 3.7 3.1 5.3.7 1 2 1.4 2.1 2.9-1.2 1.7-1.3 4.3-2 6.4-3 9.6-1.9 21.6 2.5 28.7 1.4 2.2 4.6 6.9 9 5.1 3.9-1.6 3-6.4 4.1-10.7.2-1 .1-1.7.6-2.3v.2l3.5 7c2.6 4.2 7.2 8.6 11.1 11.5 2 1.5 3.6 4.2 6.2 5.1v-.2h-.2c-.5-.8-1.3-1.1-2-1.8-1.5-1.5-3.2-3.4-4.5-5.1-3.6-4.8-6.7-10.1-9.6-15.6-1.4-2.6-2.6-5.5-3.7-8.2-.4-1-.4-2.6-1.4-3.1-1.3 2-3.1 3.5-4.1 5.9-1.6 3.7-1.8 8.2-2.3 12.9-.3.1-.2 0-.4.2-2.7-.7-3.7-3.5-4.7-5.9-2.6-6.1-3-15.8-.8-22.8.6-1.8 3.2-7.5 2.1-9.2-.5-1.7-2.2-2.6-3.1-3.9-1.2-1.6-2.3-3.6-3.1-5.5-2.1-4.7-3.1-10-5.3-14.8-1.1-2.3-2.8-4.6-4.3-6.6-1.6-2.3-3.4-3.9-4.7-6.6-.4-1-1-2.5-.4-3.5.2-.7.5-1 1.2-1.2 1.1-.9 4.3.3 5.5.8 3.1 1.3 5.7 2.5 8.4 4.3 1.3.8 2.6 2.5 4.1 2.9h1.8c2.7.6 5.8.2 8.4 1 4.5 1.4 8.6 3.5 12.3 5.9 11.2 7.1 20.4 17.2 26.7 29.3 1 1.9 1.5 3.8 2.3 5.9 1.8 4.2 4.1 8.4 5.9 12.5 1.8 4.1 3.5 8.1 6.1 11.5 1.3 1.8 6.5 2.7 8.8 3.7 1.6.7 4.3 1.4 5.9 2.3 3 1.8 5.8 3.9 8.6 5.9 1.3 1 5.6 3.1 5.8 4.9z"/>
+            </svg>
+            <span class="stack-name">MySQL</span>
+        </div>
+        <div class="stack-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                <path fill="#F0DB4F" d="M1.4 1.4h125.2v125.2H1.4z"/>
+                <path fill="#323330" d="M116.3 96.7c-.9-5.7-4.6-10.5-15.7-15-3.8-1.7-8.1-3-9.4-5.9-.4-1.7-.5-2.6-.2-3.7.8-3.3 4.8-4.4 7.9-3.4 2 .7 3.9 2.2 5.1 4.7 5.4-3.5 5.4-3.5 9.2-5.9-1.4-2.1-2.1-3.1-3-4-3.3-3.7-7.7-5.5-14.8-5.4l-3.7.5c-3.5.9-6.9 2.7-8.9 5.2-5.9 6.7-4.2 18.5 3 23.3 7.1 5.3 17.5 6.5 18.9 11.5 1.3 6.1-4.5 8.1-10.2 7.4-4.2-.9-6.6-3-9.1-6.9-4.7 2.7-4.7 2.7-9.5 5.5 1.1 2.5 2.3 3.6 4.3 5.8 9.1 9.2 31.8 8.7 35.8-5.2.2-.4 1.3-3.6.4-8.6zM69.5 58.9h-11.7l-.1 30.3c0 6.4.3 12.3-.7 14.1-1.7 3.6-6.2 3.1-8.2 2.4-2.1-1-3.1-2.5-4.3-4.5-.3-.6-.6-1-.7-1.1l-9.5 5.8c1.6 3.3 3.9 6.1 6.9 7.9 4.5 2.7 10.5 3.5 16.7 2.1 4.1-1.2 7.6-3.7 9.5-7.4 2.7-4.9 2.1-10.9 2.1-17.4V58.9z"/>
+            </svg>
+            <span class="stack-name">JavaScript</span>
+        </div>
+    </div>
+</section>
+
+        <section id="experience">
+            <h2>Work Experience</h2>
+            
+            <div class="exp-item">
+                <div class="exp-header">
+                    <span class="role">Junior Software Engineer (Full-Time)</span>
+                    <span class="date">June 2023 — Present</span>
+                </div>
+                <span class="company">Valens Research Asia Inc.</span>
+                <ul>
+                    <li>Developed and maintained backend Rest APIs using Python, Django REST Framework, and FastAPI.</li>
+                    <li>Built AI-driven web applications utilizing Azure OpenAI integration.</li>
+                    <li>Designed and optimized SQL queries using PostgreSQL and MySQL.</li>
+                    <li>Automated web scraping and testing using Python (Selenium/Pytest).</li>
+                    <li>Prompt Engineering using ChatGPT, Gemini CLI, Claude.</li>
+                </ul>
+                <div class="tag-container">
+                    <span class="tag">Python</span><span class="tag">Django</span><span class="tag">FastAPI</span><span class="tag">Azure AI</span>
+                </div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-header">
+                    <span class="role">Junior Software Engineer (Intern)</span>
+                    <span class="date">March 2023 — June 2023</span>
+                </div>
+                <span class="company">Valens Research Asia Inc.</span>
+                <ul>
+                    <li>Assisted in backend development using Django REST Framework and PostgreSQL.</li>
+                    <li>Performed unit testing, debugging, and issue resolution for web apps.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Self-Directed Projects</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Moving Cars Management</h3>
+                    <p>Relational database management application built with Django to handle complex vehicle movement logic.</p>
+                    <a href="https://bitbucket.org/echn-self-projects/moving-cars/src/main/" target="_blank" class="btn-code">view_source_</a>
+                </div>
+
+                <div class="project-card">
+                    <h3>SEC Financial Scraper</h3>
+                    <p>Python-based automated scraper designed to retrieve annual financial data from SEC.gov portals.</p>
+                    <a href="https://bitbucket.org/echn-self-projects/scraper-of-annual-financial-data-in-sec-gov/src" target="_blank" class="btn-code">view_source_</a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Django Restful API Sample</h3>
+                    <p>A reference project showcasing standard REST implementation, and endpoint design.</p>
+                    <a href="https://bitbucket.org/echn-self-projects/sample-of-api-using-python-django-restful-api/src" target="_blank" class="btn-code">view_source_</a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Address Book API</h3>
+                    <p>Backend service for contact management featuring Fast API.</p>
+                    <a href="https://bitbucket.org/echn-self-projects/address-book-api/src/main/" target="_blank" class="btn-code">view_source_</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <div class="exp-item">
+                <div class="exp-header">
+                    <span class="role">BS in Information Technology</span>
+                    <span class="date">Graduated July 2023</span>
+                </div>
+                <span class="company">DMMMSU</span>
+                <p style="color: var(--text-dim); margin-top: 10px;"><strong>Thesis:</strong> Academic Proficiency Analytics Tool: Basis for Academic Strand Recommendation</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Emmel Cyrus Navarro • Software Engineer • Built with Pythonic Logic</p>
+        </footer>
+    </div>
+
+    <script>
+        // THEME TOGGLE LOGIC
+        const btn = document.getElementById('theme-toggle');
+        const root = document.documentElement;
+        
+        btn.addEventListener('click', () => {
+            const isDark = root.getAttribute('data-theme') === 'dark';
+            root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            btn.innerHTML = isDark 
+                ? '<svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>'
+                : '<svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+        });
+
+        // SCROLL REVEAL ANIMATION
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
